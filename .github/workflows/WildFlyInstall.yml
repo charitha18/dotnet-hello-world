@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
         # TeamCity Step 1: Version MSI and create x64 standalone.bat variations
       - name: Version MSI and create x64 standalone.bat variations
-        shell: powershell
+        shell: pwsh
         run: |
           $versionText = "version.txt"
           $buildNumber = ${{ env.BUILD_NUMBER }}
