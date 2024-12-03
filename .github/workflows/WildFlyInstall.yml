@@ -39,5 +39,5 @@ jobs:
         with:
           name: Wildfly_${{ env.BUILD_NUMBER }}
           path: |
-            ${{ github.workspace }}/bin/Release/dotnet-hello-world.msi
+            ${{ github.workspace }}\bin\*
             
