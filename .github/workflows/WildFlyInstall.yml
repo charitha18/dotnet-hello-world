@@ -25,13 +25,13 @@ jobs:
         with:
           nuget-version: "6.2.1"
       - name: Restore packages
-        run: nuget restore WildFlyInstall.sln
+        run: nuget restore dotnet-hello-world.sln
         # TeamCity Step 3: Build x64 MSI
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Build x64 MSI
         run: |
-          msbuild WildFlyInstall.sln /p:Configuration=Release /p:Platform=x64 /t:rebuild
+          msbuild dotnet-hello-world.sln /p:Configuration=Release /p:Platform=x64 /t:rebuild
         # Publish artifacts
       - name: Upload artifacts
         if: always()
@@ -39,6 +39,5 @@ jobs:
         with:
           name: Wildfly_${{ env.BUILD_NUMBER }}
           path: |
-            ${{ github.workspace }}/bin/Release/WildflyInstall.msi
-            ${{ github.workspace }}/bin/Release/WildflyInstall.ps1
-            ${{ github.workspace }}/resources/documents/WildFlyInstallInstructions.txt
+            ${{ github.workspace }}/bin/Release/dotnet-hello-world.msi
+            
