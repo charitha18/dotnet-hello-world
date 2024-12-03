@@ -4,7 +4,7 @@ env:
   BUILD_NUMBER: "1.0.${{ github.run_number }}"
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       # checkout the code
       - name: checkout the repository
