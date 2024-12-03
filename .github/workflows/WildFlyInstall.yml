@@ -31,7 +31,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
       - name: Build x64 MSI
         run: |
-          msbuild dotnet-hello-world.sln /p:Configuration=Release /p:Platform=x64 /t:rebuild
+          msbuild dotnet-hello-world.sln /p:Configuration=Debug /p:Platform="Any CPU" /t:rebuild
         # Publish artifacts
       - name: Upload artifacts
         if: always()
