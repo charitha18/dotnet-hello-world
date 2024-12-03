@@ -1,0 +1,44 @@
+name: Wildfly Installer
+on: workflow_dispatch
+env:
+  BUILD_NUMBER: "1.0.${{ github.run_number }}"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the code
+      - name: checkout the repository
+        uses: actions/checkout@v4
+        # TeamCity Step 1: Version MSI and create x64 standalone.bat variations
+      - name: Version MSI and create x64 standalone.bat variations
+        shell: powershell
+        run: |
+          $versionText = "version.txt"
+          $buildNumber = ${{ env.BUILD_NUMBER }}
+          if (Test-Path $versionText) {
+              Remove-Item $versionText -recurse
+          }
+          $buildNumber | out-File -FilePath $versionText          
+        # TeamCity Step 2: Nuget Installer
+      - name: Nuget Installer
+        uses: nuget/setup-nuget@v2
+        with:
+          nuget-version: "6.2.1"
+      - name: Restore packages
+        run: nuget restore WildFlyInstall.sln
+        # TeamCity Step 3: Build x64 MSI
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Build x64 MSI
+        run: |
+          msbuild WildFlyInstall.sln /p:Configuration=Release /p:Platform=x64 /t:rebuild
+        # Publish artifacts
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wildfly_${{ env.BUILD_NUMBER }}
+          path: |
+            ${{ github.workspace }}/bin/Release/WildflyInstall.msi
+            ${{ github.workspace }}/bin/Release/WildflyInstall.ps1
+            ${{ github.workspace }}/resources/documents/WildFlyInstallInstructions.txt
